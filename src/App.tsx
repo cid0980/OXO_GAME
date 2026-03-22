@@ -21,7 +21,7 @@ function App() {
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  // Read room from URL
+  
   const initialRoomId = useRef<string | undefined>(
     new URLSearchParams(window.location.search).get('room') || undefined
   );
@@ -66,16 +66,16 @@ function App() {
     onDisconnected: handleDisconnected,
   });
 
-  // When host peer is ready and gets an opponent connection
+  
   useEffect(() => {
     if (status === 'connected' && isHost && screen === 'waiting') {
-      // Send ready signal to opponent
+      
       const readyMsg: PeerMessage = {
         type: 'PLAYER_READY',
         payload: { symbol: 'X', name: myName },
       };
       sendMessage(readyMsg);
-      // Start game
+     
       const newState: GameState = { ...initialGameState(), gameStarted: true };
       setGameState(newState);
       sendMessage({ type: 'GAME_STATE', payload: newState });
@@ -110,16 +110,16 @@ function App() {
     const peer = initPeer();
     peer.on('open', () => {
       connectTo(targetRoomId);
-      // Send ready after connection opens
+       
     });
     peer.on('error', () => {
       setError('Failed to connect. Check the room code and try again.');
       setIsConnecting(false);
     });
-    // We'll send PLAYER_READY once connected (handled in handleConnected → status effect)
+    
   }, [initPeer, connectTo]);
 
-  // When joiner connects, send their player ready signal
+   player ready signal
   useEffect(() => {
     if (status === 'connected' && !isHost && screen === 'lobby') {
       setIsConnecting(false);
@@ -156,14 +156,14 @@ function App() {
   const handleRematch = useCallback(() => {
     const opponentSymbol: PlayerSymbol = mySymbol === 'X' ? 'O' : 'X';
     if (gameState.rematchRequested === opponentSymbol) {
-      // Opponent already requested — accept
+       
       const fresh: GameState = { ...initialGameState(), gameStarted: true };
       setGameState(fresh);
       setMessages([]);
       sendMessage({ type: 'REMATCH_ACCEPT' });
       sendMessage({ type: 'GAME_STATE', payload: fresh });
     } else {
-      // Request rematch
+      
       setGameState(prev => ({ ...prev, rematchRequested: mySymbol }));
       sendMessage({ type: 'REMATCH_REQUEST', payload: { from: mySymbol } });
     }

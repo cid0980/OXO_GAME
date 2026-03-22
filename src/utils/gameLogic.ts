@@ -1,6 +1,6 @@
 import { Board, PlayerSymbol, GameState, CheatType } from '../types/game';
 
-export const MAX_MARKS = 3; // Each player can have at most 3 marks at once
+export const MAX_MARKS = 3; 
 
 export const WINNING_LINES = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
@@ -14,7 +14,7 @@ export function checkWinner(board: Board): PlayerSymbol | 'draw' | null {
       return board[a] as PlayerSymbol;
     }
   }
-  // No draw in Ouroboros mode — board never truly fills up
+  
   return null;
 }
 
